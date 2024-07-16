@@ -1,8 +1,7 @@
 const { MongoClient } = require('mongodb');
 const ACCESS_DB = require('../../config/envDB')
-const md5 = require('md5');
 
-const URI = "mongodb+srv://" + ACCESS_DB.DB_Credentials.Username + ":" + ACCESS_DB.DB_Credentials.Password + "@chatterbotcluster.cmwwli4.mongodb.net/Chatterbot_Database?retryWrites=true&w=majority";
+const URI = "mongodb+srv://" + ACCESS_DB.DB_Credentials.Username + ":" + ACCESS_DB.DB_Credentials.Password + "@demacluster.9yaczoz.mongodb.net/Dema_Database?retryWrites=true&w=majority";
 
 async function loginClients(loginInfo) {
     return new Promise(async (resolve, reject) => {
@@ -17,8 +16,8 @@ async function loginClients(loginInfo) {
             const collection = database.collection('clients');
 
             const result = await collection.findOne({
-                'email': loginInfo.email, 
-                'password': md5(loginInfo.password)
+                'email': loginInfo.email 
+                // 'name': loginInfo.name
             });
             
             resolve(result);

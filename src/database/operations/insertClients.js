@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 const { MongoClient } = require('mongodb');
 const ACCESS_DB = require('../../config/envDB')
 const ClientsSchema = require('../../database/Schemas/Clients');
-const md5 = require('md5');
 
-const URI = "mongodb+srv://" + ACCESS_DB.DB_Credentials.Username + ":" + ACCESS_DB.DB_Credentials.Password + "@chatterbotcluster.cmwwli4.mongodb.net/Chatterbot_Database?retryWrites=true&w=majority";
+const URI = "mongodb+srv://" + ACCESS_DB.DB_Credentials.Username + ":" + ACCESS_DB.DB_Credentials.Password + "@demacluster.9yaczoz.mongodb.net/Dema_Database?retryWrites=true&w=majority";
 
 const Clients = mongoose.model('Clients', ClientsSchema);
 
@@ -21,8 +20,6 @@ async function insertClients(newClient) {
             
             const database = client.db('clients');
             const collection = database.collection('clients');
-
-            user.password = md5(user.password);
 
             const result = await collection.insertOne(user);
             

@@ -86,7 +86,7 @@ router.post('/login', (req, res) => {
         const secretKey = 'suaChaveSecretaSuperSecreta';
         const userData = {
           userId: resultOpLoginClients._id,
-          username: req.body.email,
+          email: req.body.email,
         };
 
         const token = jwt.sign(userData, secretKey);
@@ -94,8 +94,7 @@ router.post('/login', (req, res) => {
         res.send({
           status: 200,
           token: token,
-          email: req.body.email,
-          name: resultOpLoginClients.name
+          client: resultOpLoginClients
         });
       } else {
         res.send({
