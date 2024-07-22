@@ -3,14 +3,10 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const insertClients = require('./database/operations/insertClients');
-const insertFavorites = require('./database/operations/insertFavorites');
-const getActions = require('./database/operations/getActions');
-const getFavs = require('./database/operations/getFavorites');
-const removeFavs = require('./database/operations/removeFavorite');
 const loginClients = require('./database/operations/loginClients');
-
 const insertProducts = require('./database/operations/insertProducts');
 const getProducts = require('./database/operations/getProducts');
+const getProduct = require('./database/operations/getProduct');
 
 
 // TESTING DEMA ROUTE
@@ -48,34 +44,6 @@ router.post('/client', async (req, res) => {
   insertNewClients();
 });
 
-// GET ALL ACTIVES
-router.get('/allActives', async (req, res) => {
-  async function getAllActions() {
-
-    try {
-      const resultOpGetActions = await getActions();
-
-      if (resultOpGetActions && resultOpGetActions.length > 0) {
-        return res.json({ 
-          status: 200, 
-          actives: resultOpGetActions,
-          message: "Get all actions ok" 
-        });
-      } else {
-        return res.json({ 
-          status: 500, 
-          message: "Error on get all actions" 
-        });
-      }
-
-    } catch (error) {
-      console.log("Error at getAllActions: ", error);
-    }
-  }
-
-  getAllActions();
-});
-
 // LOGIN
 router.post('/login', (req, res) => {
   async function makeLogin() {
@@ -108,87 +76,6 @@ router.post('/login', (req, res) => {
   }
 
   makeLogin();
-});
-
-// CREATE FAVORITE
-router.post('/favorite', async (req, res) => {
-  async function insertFavorite() {
-    console.log("Inserindo favorito: ", req.body);
-    try {
-      const resultOpNewFavorites = await insertFavorites(req.body);
-
-      if (resultOpNewFavorites && resultOpNewFavorites.insertedId) {
-        res.send({
-          status: 200
-        });
-      } else {
-        res.send({
-          status: 500
-        });
-      }
-
-    } catch (error) {
-      console.log("Error at insertFavorite: ", error);
-    }
-  }
-
-  insertFavorite();
-});
-
-// GET ALL FAVORITES
-router.post('/getFavorites', async (req, res) => {
-  async function getAllFavorites() {
-
-    try {
-      const resultOpGetFavorites = await getFavs(req.body);
-
-      if (resultOpGetFavorites && resultOpGetFavorites.length > 0) {
-        return res.json({ 
-          status: 200, 
-          favorites: resultOpGetFavorites,
-          message: "Get all favorites ok" 
-        });
-      } else {
-        return res.json({ 
-          status: 500, 
-          message: "Error on get all favorites" 
-        });
-      }
-
-    } catch (error) {
-      console.log("Error at getAllFavorites: ", error);
-    }
-  }
-
-  getAllFavorites();
-});
-
-// REMOVE FAVORITE
-router.post('/removeFavorite', async (req, res) => {
-  async function removeFavorite() {
-
-    try {
-      const resultOpRemoveFavorite = await removeFavs(req.body);
-
-      if (resultOpRemoveFavorite && resultOpRemoveFavorite.deletedCount == 1) {
-        return res.json({ 
-          status: 200, 
-          favorites: resultOpRemoveFavorite,
-          message: "Remove favorite ok" 
-        });
-      } else {
-        return res.json({ 
-          status: 500, 
-          message: "Error on remove favorite" 
-        });
-      }
-
-    } catch (error) {
-      console.log("Error at removeFavorite: ", error);
-    }
-  }
-
-  removeFavorite();
 });
 
 // CREATE PRODUCT
@@ -244,6 +131,36 @@ router.get('/products', async (req, res) => {
   }
 
   getAllProducts();
+});
+
+// GET PRODUCT
+router.post('/product', async (req, res) => {
+  async function getProductId() {
+
+    console.log("Buscando produto: ", req.body);
+
+    try {
+      const resultOpGetProduct = await getProduct(req.body);
+
+      console.log("resultOpGetProduct: ", resultOpGetProduct);
+
+      if (resultOpGetProduct && resultOpGetProduct._id) {
+        res.send({
+          status: 200,
+          product: resultOpGetProduct
+        });
+      } else {
+        res.send({
+          status: 500
+        });
+      }
+
+    } catch (error) {
+      console.log("Error at getProduct: ", error);
+    }
+  }
+
+  getProductId();
 });
 
 module.exports = router;

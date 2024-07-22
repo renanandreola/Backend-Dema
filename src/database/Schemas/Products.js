@@ -5,5 +5,7 @@ module.exports = new Schema({
     price: Number,
     description: String,
     image: String,
-    stock: Number
+    stock: Number,
+    hasPromotion: Boolean,
+    pricePromotion: Number
 });
