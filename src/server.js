@@ -8,7 +8,6 @@ const insertProducts = require('./database/operations/insertProducts');
 const getProducts = require('./database/operations/getProducts');
 const getProduct = require('./database/operations/getProduct');
 
-
 // TESTING DEMA ROUTE
 router.get("/testing", async (req, res) => {
     console.log("Dema test routing in running!");
