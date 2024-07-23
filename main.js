@@ -6,6 +6,7 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Comment on localhost
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'https://dema-automotive-95e44bfb4ebf.herokuapp.com');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -18,6 +19,9 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Comment on production
+// app.use(cors);
 
 const database_init = require('./src/database/mongodb');
 
