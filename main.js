@@ -25,7 +25,7 @@ database_init();
 
 app.use("/dema", require("./src/server"));
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3030;
 
 app.listen(port, () => {
     console.log("Listen on port: " + port);
