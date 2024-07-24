@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 
 const insertClients = require('./database/operations/insertClients');
 const loginClients = require('./database/operations/loginClients');
@@ -102,6 +104,31 @@ router.post('/addproduct', async (req, res) => {
   }
 
   insertProduct();
+});
+
+// GET ALL PRODUCTS FILE
+router.get('/productsFile', async (req, res) => {
+  try {
+    const filePath = path.resolve(__dirname, '..', 'products.json');
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+      if (err) {
+        console.error('Erro ao ler o arquivo:', err);
+        res.status(500).json({ message: 'Erro ao ler o arquivo' });
+      } else {
+        return res.json({ 
+          status: 200, 
+          products: JSON.parse(data),
+          message: "Get all products file ok" 
+        });
+      }
+    });
+  } catch (error) {
+    return res.json({ 
+      status: 500, 
+      message: "Error on get all products file",
+      error: error 
+    });
+  }
 });
 
 // GET ALL PRODUCTS
