@@ -110,33 +110,21 @@ router.post('/addproduct', async (req, res) => {
 router.get('/productsFile', async (req, res) => {
   try {
     const filePath = path.resolve(__dirname, '..', 'products.json');
-    
     fs.readFile(filePath, 'utf-8', (err, data) => {
       if (err) {
         console.error('Erro ao ler o arquivo:', err);
         res.status(500).json({ message: 'Erro ao ler o arquivo' });
       } else {
-        let products = JSON.parse(data);
-
-        // Ordene os produtos conforme necessário, por exemplo, por um campo 'id' ou 'name'
-        products.sort((a, b) => a.id - b.id); // Modifique conforme o campo de ordenação
-
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.write('[');
-
-        products.forEach((product, index) => {
-          if (index > 0) {
-            res.write(',');
-          }
-          res.write(JSON.stringify(product));
+        return res.json({ 
+          status: 200, 
+          products: JSON.parse(data),
+          message: "Get all products file ok" 
         });
-
-        res.write(']');
-        res.end();
       }
     });
   } catch (error) {
-    return res.status(500).json({ 
+    return res.json({ 
+      status: 500, 
       message: "Error on get all products file",
       error: error 
     });
