@@ -9,9 +9,7 @@ const Products = mongoose.model('Products', ProductsSchema);
 
 async function insertProducts(newProduct) {
     return new Promise(async (resolve, reject) => {
-        const client = new MongoClient(URI, { 
-            useUnifiedTopology: true
-        });
+        const client = new MongoClient(URI);
 
         try {
             await client.connect();

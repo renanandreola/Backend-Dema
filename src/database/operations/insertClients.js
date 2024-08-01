@@ -9,9 +9,7 @@ const Clients = mongoose.model('Clients', ClientsSchema);
 
 async function insertClients(newClient) {
     return new Promise(async (resolve, reject) => {
-        const client = new MongoClient(URI, { 
-            useUnifiedTopology: true
-        });
+        const client = new MongoClient(URI);
 
         try {
             await client.connect();

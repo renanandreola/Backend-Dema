@@ -5,9 +5,7 @@ const URI = "mongodb+srv://" + ACCESS_DB.DB_Credentials.Username + ":" + ACCESS_
 
 async function loginClients(loginInfo) {
     return new Promise(async (resolve, reject) => {
-        const client = new MongoClient(URI, { 
-            useUnifiedTopology: true
-        });
+        const client = new MongoClient(URI);
 
         try {
             await client.connect();
@@ -17,7 +15,6 @@ async function loginClients(loginInfo) {
 
             const result = await collection.findOne({
                 'email': loginInfo.email 
-                // 'name': loginInfo.name
             });
             
             resolve(result);
