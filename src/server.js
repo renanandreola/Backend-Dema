@@ -10,6 +10,7 @@ const insertAdm = require('./database/operations/insertAdmin');
 const getProducts = require('./database/operations/getProducts');
 const getClients = require('./database/operations/getClients');
 const getProduct = require('./database/operations/getProduct');
+const removeProduct = require('./database/operations/removeProduct');
 
 // TESTING DEMA ROUTE
 router.get("/testing", async (req, res) => {
@@ -197,6 +198,28 @@ router.post('/product', async (req, res) => {
     } catch (error) {
       console.log("Error at getProduct: ", error);
     }
+});
+
+router.post('/removeProduct', async (req, res) => {
+  try {
+    const resultOpRemoveProduct = await removeProduct(req.body);
+
+    if (resultOpRemoveProduct && resultOpRemoveProduct.deletedCount == 1) {
+      return res.json({ 
+        status: 200, 
+        // favorites: resultOpRemoveProduct,
+        message: "Remove product ok" 
+      });
+    } else {
+      return res.json({ 
+        status: 500, 
+        message: "Error on remove product" 
+      });
+    }
+
+  } catch (error) {
+    console.log("Error at removeProduct: ", error);
+  }
 });
 
 module.exports = router;
