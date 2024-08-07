@@ -4,9 +4,11 @@ const jwt = require('jsonwebtoken');
 
 const insertClients = require('./database/operations/insertClients');
 const loginClients = require('./database/operations/loginClients');
+const loginAdmin = require('./database/operations/loginAdmin');
 const insertProducts = require('./database/operations/insertProducts');
 const insertAdm = require('./database/operations/insertAdmin');
 const getProducts = require('./database/operations/getProducts');
+const getClients = require('./database/operations/getClients');
 const getProduct = require('./database/operations/getProduct');
 
 // TESTING DEMA ROUTE
@@ -45,17 +47,8 @@ router.post('/login', async (req, res) => {
       const resultOpLoginClients = await loginClients(req.body);
 
       if (resultOpLoginClients && resultOpLoginClients._id) {
-        const secretKey = 'suaChaveSecretaSuperSecreta';
-        const userData = {
-          userId: resultOpLoginClients._id,
-          email: req.body.email,
-        };
-
-        const token = jwt.sign(userData, secretKey);
-
         res.send({
           status: 200,
-          token: token,
           client: resultOpLoginClients
         });
       } else {
@@ -67,6 +60,59 @@ router.post('/login', async (req, res) => {
     } catch (error) {
       console.log("Error at makeLogin: ", error);
     }
+});
+
+// LOGIN ADMIN
+router.post('/loginAdmin', async (req, res) => {
+  try {
+    const resultOpLoginAdmin = await loginAdmin(req.body);
+
+    if (resultOpLoginAdmin && resultOpLoginAdmin._id) {
+      const secretKey = 'suaChaveSecretaSuperSecreta';
+      const userData = {
+        userId: resultOpLoginAdmin._id,
+        email: req.body.email,
+      };
+
+      const token = jwt.sign(userData, secretKey);
+
+      res.send({
+        status: 200,
+        token: token,
+        // client: resultOpLoginAdmin
+      });
+    } else {
+      res.send({
+        status: 500
+      });
+    }
+
+  } catch (error) {
+    console.log("Error at makeLogin: ", error);
+  }
+});
+
+// GET ALL CLIENTS
+router.get('/clients', async (req, res) => {
+  try {
+    const resultOpGetClients = await getClients();
+
+    if (resultOpGetClients && resultOpGetClients.length > 0) {
+      return res.json({ 
+        status: 200, 
+        products: resultOpGetClients,
+        message: "Get all clients ok" 
+      });
+    } else {
+      return res.json({ 
+        status: 500, 
+        message: "Error on get all clients" 
+      });
+    }
+
+  } catch (error) {
+    console.log("Error at getAllClients: ", error);
+  }
 });
 
 // CREATE PRODUCT
