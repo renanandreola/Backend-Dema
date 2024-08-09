@@ -6,11 +6,13 @@ const insertClients = require('./database/operations/insertClients');
 const loginClients = require('./database/operations/loginClients');
 const loginAdmin = require('./database/operations/loginAdmin');
 const insertProducts = require('./database/operations/insertProducts');
+const editProducts = require('./database/operations/editProduct');
 const insertAdm = require('./database/operations/insertAdmin');
 const getProducts = require('./database/operations/getProducts');
 const getClients = require('./database/operations/getClients');
 const getProduct = require('./database/operations/getProduct');
 const removeProduct = require('./database/operations/removeProduct');
+const removeClient = require('./database/operations/removeClient');
 
 // TESTING DEMA ROUTE
 router.get("/testing", async (req, res) => {
@@ -136,6 +138,26 @@ router.post('/addproduct', async (req, res) => {
     }
 });
 
+// EDIT PRODUCT
+router.post('/editproduct', async (req, res) => {
+  try {
+    const resultOpEdit = await editProducts(req.body);
+    
+    if (resultOpEdit && resultOpEdit.modifiedCount) {
+      res.send({
+        status: 200
+      });
+    } else {
+      res.send({
+        status: 500
+      });
+    }
+
+  } catch (error) {
+    console.log("Error at editProduct: ", error);
+  }
+});
+
 // CREATE ADMIN
 router.post('/addAdmin', async (req, res) => {
     try {
@@ -200,6 +222,7 @@ router.post('/product', async (req, res) => {
     }
 });
 
+// REMOVE PRODUCT
 router.post('/removeProduct', async (req, res) => {
   try {
     const resultOpRemoveProduct = await removeProduct(req.body);
@@ -219,6 +242,28 @@ router.post('/removeProduct', async (req, res) => {
 
   } catch (error) {
     console.log("Error at removeProduct: ", error);
+  }
+});
+
+// REMOVE CLIENT
+router.post('/removeClient', async (req, res) => {
+  try {
+    const resultOpRemoveProduct = await removeClient(req.body);
+
+    if (resultOpRemoveProduct && resultOpRemoveProduct.deletedCount == 1) {
+      return res.json({ 
+        status: 200, 
+        message: "Remove client ok" 
+      });
+    } else {
+      return res.json({ 
+        status: 500, 
+        message: "Error on remove client" 
+      });
+    }
+
+  } catch (error) {
+    console.log("Error at removeClient: ", error);
   }
 });
 
