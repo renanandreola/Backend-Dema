@@ -13,6 +13,7 @@ const getClients = require('./database/operations/getClients');
 const getProduct = require('./database/operations/getProduct');
 const removeProduct = require('./database/operations/removeProduct');
 const removeClient = require('./database/operations/removeClient');
+const searchProducts = require('./database/operations/searchProducts');
 
 // TESTING DEMA ROUTE
 router.get("/testing", async (req, res) => {
@@ -264,6 +265,29 @@ router.post('/removeClient', async (req, res) => {
 
   } catch (error) {
     console.log("Error at removeClient: ", error);
+  }
+});
+
+// SEARCH ACTIONS
+router.post('/searchResults', async (req, res) => {
+  try {
+    const resultSearchProducts = await searchProducts(req.body.searchTerm);
+
+    if (resultSearchProducts && resultSearchProducts.length > 0) {
+      return res.json({ 
+        status: 200, 
+        results: resultSearchProducts,
+        message: "searchProducts ok" 
+      });
+    } else {
+      return res.json({ 
+        status: 400,
+        message: "searchProducts no results"
+      });
+    }
+
+  } catch (error) {
+    console.log("Error at searchProducts: ", error);
   }
 });
 
