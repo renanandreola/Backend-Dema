@@ -5,9 +5,7 @@ const URI = "mongodb+srv://" + ACCESS_DB.DB_Credentials.Username + ":" + ACCESS_
 
 async function searchProducts(searchTerm) {
     return new Promise(async (resolve, reject) => {
-        const client = new MongoClient(URI, { 
-            useUnifiedTopology: true
-        });
+        const client = new MongoClient(URI);
 
         try {
             await client.connect();
