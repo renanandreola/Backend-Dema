@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+const { Schema } = require("mongoose");
 
 module.exports = new Schema({
-    email: String,
-    password: String
+  email: String,
+  password: String,
 });
