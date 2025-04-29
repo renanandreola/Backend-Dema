@@ -1,20 +1,12 @@
 const mongoose = require("mongoose");
 const { MongoClient } = require("mongodb");
-const ACCESS_DB = require("../../config/envDB");
 const ClientsSchema = require("../../database/Schemas/Clients");
-
-const URI =
-  "mongodb+srv://" +
-  ACCESS_DB.DB_Credentials.Username +
-  ":" +
-  ACCESS_DB.DB_Credentials.Password +
-  "@demacluster.9yaczoz.mongodb.net/Dema_Database?retryWrites=true&w=majority";
 
 const Clients = mongoose.model("Clients", ClientsSchema);
 
 async function insertClients(newClient) {
   return new Promise(async (resolve, reject) => {
-    const client = new MongoClient(URI);
+    const client = new MongoClient(process.env.DBURI);
 
     try {
       await client.connect();

@@ -1,21 +1,13 @@
 const mongoose = require("mongoose");
 const { MongoClient } = require("mongodb");
-const ACCESS_DB = require("../../config/envDB");
 const AdminSchema = require("../Schemas/Admin");
 const md5 = require("md5");
-
-const URI =
-  "mongodb+srv://" +
-  ACCESS_DB.DB_Credentials.Username +
-  ":" +
-  ACCESS_DB.DB_Credentials.Password +
-  "@demacluster.9yaczoz.mongodb.net/Dema_Database?retryWrites=true&w=majority";
 
 const Admin = mongoose.model("Admin", AdminSchema);
 
 async function insertAdmin(newAdmin) {
   return new Promise(async (resolve, reject) => {
-    const client = new MongoClient(URI);
+    const client = new MongoClient(process.env.DBURI);
 
     try {
       await client.connect();

@@ -1,14 +1,6 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const ACCESS_DB = require("../config/envDB");
 
-const uri =
-  "mongodb+srv://" +
-  ACCESS_DB.DB_Credentials.Username +
-  ":" +
-  ACCESS_DB.DB_Credentials.Password +
-  "@demacluster.9yaczoz.mongodb.net/Dema_Database?retryWrites=true&w=majority";
-
-const client = new MongoClient(uri, {
+const client = new MongoClient(process.env.DBURI, {
   serverApi: ServerApiVersion.v1,
 });
 
