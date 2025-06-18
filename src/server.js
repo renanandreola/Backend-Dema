@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-
 const insertClients = require("./database/operations/insertClients");
 const loginClients = require("./database/operations/loginClients");
 const loginAdmin = require("./database/operations/loginAdmin");
@@ -14,8 +13,10 @@ const getProduct = require("./database/operations/getProduct");
 const removeProduct = require("./database/operations/removeProduct");
 const removeClient = require("./database/operations/removeClient");
 const searchProducts = require("./database/operations/searchProducts");
+const { swaggerUi, swaggerSpec } = require("./config/swaggerConfig");
 
-// TESTING DEMA ROUTE
+router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 router.get("/testing", async (req, res) => {
   console.log("Dema test routing in running!");
 
@@ -25,7 +26,6 @@ router.get("/testing", async (req, res) => {
   });
 });
 
-// ADD CLIENT
 router.post("/client", async (req, res) => {
   try {
     const resultOpNewClients = await insertClients(req.body);
@@ -44,7 +44,6 @@ router.post("/client", async (req, res) => {
   }
 });
 
-// LOGIN
 router.post("/login", async (req, res) => {
   try {
     const resultOpLoginClients = await loginClients(req.body);
@@ -64,7 +63,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// LOGIN ADMIN
 router.post("/loginAdmin", async (req, res) => {
   try {
     const resultOpLoginAdmin = await loginAdmin(req.body);
@@ -93,7 +91,6 @@ router.post("/loginAdmin", async (req, res) => {
   }
 });
 
-// GET ALL CLIENTS
 router.get("/clients", async (req, res) => {
   try {
     const resultOpGetClients = await getClients();
@@ -115,7 +112,6 @@ router.get("/clients", async (req, res) => {
   }
 });
 
-// CREATE PRODUCT
 router.post("/addproduct", async (req, res) => {
   try {
     const resultOpNewProduct = await insertProducts(req.body);
@@ -134,7 +130,6 @@ router.post("/addproduct", async (req, res) => {
   }
 });
 
-// EDIT PRODUCT
 router.post("/editproduct", async (req, res) => {
   try {
     const resultOpEdit = await editProducts(req.body);
@@ -153,7 +148,6 @@ router.post("/editproduct", async (req, res) => {
   }
 });
 
-// CREATE ADMIN
 router.post("/addAdmin", async (req, res) => {
   try {
     const resultInsertAdm = await insertAdm(req.body);
@@ -172,7 +166,6 @@ router.post("/addAdmin", async (req, res) => {
   }
 });
 
-// GET ALL PRODUCTS
 router.get("/products", async (req, res) => {
   try {
     const resultOpGetProducts = await getProducts();
@@ -194,7 +187,6 @@ router.get("/products", async (req, res) => {
   }
 });
 
-// GET PRODUCT
 router.post("/product", async (req, res) => {
   try {
     const resultOpGetProduct = await getProduct(req.body);
@@ -214,7 +206,6 @@ router.post("/product", async (req, res) => {
   }
 });
 
-// REMOVE PRODUCT
 router.post("/removeProduct", async (req, res) => {
   try {
     const resultOpRemoveProduct = await removeProduct(req.body);
@@ -236,7 +227,6 @@ router.post("/removeProduct", async (req, res) => {
   }
 });
 
-// REMOVE CLIENT
 router.post("/removeClient", async (req, res) => {
   try {
     const resultOpRemoveProduct = await removeClient(req.body);
@@ -257,7 +247,6 @@ router.post("/removeClient", async (req, res) => {
   }
 });
 
-// SEARCH ACTIONS
 router.post("/searchResults", async (req, res) => {
   try {
     const resultSearchProducts = await searchProducts(req.body.searchTerm);
