@@ -8,11 +8,19 @@ const insertProducts = require("./database/operations/insertProducts");
 const editProducts = require("./database/operations/editProduct");
 const insertAdm = require("./database/operations/insertAdmin");
 const getProducts = require("./database/operations/getProducts");
+const getProductsByCategories = require("./database/operations/getProductsByCategories");
 const getClients = require("./database/operations/getClients");
 const getProduct = require("./database/operations/getProduct");
 const removeProduct = require("./database/operations/removeProduct");
 const removeClient = require("./database/operations/removeClient");
 const searchProducts = require("./database/operations/searchProducts");
+const createCategory = require("./database/operations/createCategories");
+const getCategories = require("./database/operations/getCategories");
+
+const { MongoClient, ObjectId } = require("mongodb");
+require("dotenv").config();
+
+
 const { swaggerUi, swaggerSpec } = require("./config/swaggerConfig");
 
 router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -267,5 +275,53 @@ router.post("/searchResults", async (req, res) => {
     console.log("Error at searchProducts: ", error);
   }
 });
+
+router.post("/addcategory", async (req, res) => {
+  try {
+    const result = await createCategory(req.body);
+
+    if (result && result.insertedId) {
+      res.send({ status: 200, message: "Categoria criada com sucesso" });
+    } else {
+      res.send({ status: 500, message: "Erro ao criar categoria" });
+    }
+  } catch (err) {
+    console.error("Error creating category:", err);
+    res.send({ status: 500, message: "Erro ao criar categoria" });
+  }
+});
+
+router.get("/categories", async (req, res) => {
+  try {
+    const categories = await getCategories();
+    res.send({ status: 200, categories });
+  } catch (error) {
+    console.log("Error listing categories:", error);
+    res.send({ status: 500, message: "Erro ao listar categorias" });
+  }
+});
+
+router.get("/productsByCat", async (req, res) => {
+  try {
+    // console.log(req);
+    
+    const { category } = req.query;
+    const products = await getProductsByCategories(category);
+
+    res.send({
+      status: 200,
+      products,
+    });
+  } catch (error) {
+    console.log("Error on route /products:", error);
+    res.send({
+      status: 500,
+      message: "Erro ao listar produtos",
+    });
+  }
+});
+
+
+module.exports = router;
 
 module.exports = router;

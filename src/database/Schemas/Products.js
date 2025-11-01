@@ -8,4 +8,5 @@ module.exports = new Schema({
   stock: Number,
   hasPromotion: Boolean,
   pricePromotion: Number,
+  categories: [{ type: Schema.Types.ObjectId, ref: "Category" }], // relação N:N
 });
