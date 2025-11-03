@@ -17,9 +17,7 @@ const searchProducts = require("./database/operations/searchProducts");
 const createCategory = require("./database/operations/createCategories");
 const getCategories = require("./database/operations/getCategories");
 
-const { MongoClient, ObjectId } = require("mongodb");
 require("dotenv").config();
-
 
 const { swaggerUi, swaggerSpec } = require("./config/swaggerConfig");
 
@@ -320,8 +318,5 @@ router.get("/productsByCat", async (req, res) => {
     });
   }
 });
-
-
-module.exports = router;
 
 module.exports = router;
